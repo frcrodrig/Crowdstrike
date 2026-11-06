@@ -1,0 +1,12 @@
+#event_simpleName=FusionWorkflowEvent
+| status = *
+| case {
+    status = "Succeeded" | status_label := "Success" ;
+    status = "Failed"    | status_label := "Failed" ;
+    status = "Running"   | status_label := "Running" ;
+    status = "TimedOut"  | status_label := "Timeout" ;
+    * | status_label := "Unknown" ;
+  }
+| groupBy([definition_name, status_label], function=count(as=executions))
+| rename([[definition_name, workflow_name]])
+| sort(executions, order=desc)

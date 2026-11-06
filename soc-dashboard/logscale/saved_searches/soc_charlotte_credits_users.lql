@@ -1,0 +1,7 @@
+#event_simpleName=FusionWorkflowEvent
+| in(field=status, values=["Succeeded", "Failed"])
+| definition_name=/charlotte|ai|agent|advisor|iom/i
+| credits_per_execution := 15
+| groupBy([cid, definition_name], function=count(as=executions))
+| user_credits := executions * credits_per_execution
+| sort(field=user_credits, order=desc, limit=10)

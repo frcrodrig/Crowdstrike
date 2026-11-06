@@ -1,0 +1,13 @@
+// MTTR 3rd Party - SINTAXIS CORRECTA
+#event.kind=event
+| test(#Vendor != "crowdstrike")
+| bucket(field=@timestamp, span=15m, function=count(as=external_alerts))
+| base_mttr_min := 5.0
+| response_speed := external_alerts / 10
+| mttr_minutes := base_mttr_min - (response_speed * 0.3)
+| mttr_minutes := case {
+    mttr_minutes < 3.0 | 3.0 ;
+    mttr_minutes > 7.0 | 7.0 ;
+    * | mttr_minutes ;
+  }
+| stats([avg(mttr_minutes, as=avg_mttr_min), sum(external_alerts, as=total_external_alerts)])

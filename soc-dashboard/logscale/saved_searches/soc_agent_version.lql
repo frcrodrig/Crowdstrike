@@ -1,0 +1,4 @@
+#event_simpleName=AgentOnline
+| groupBy(AgentVersion, function=count(as=count))
+| sort(count, order=desc)
+| head(10)

@@ -1,0 +1,18 @@
+name: workflow-monitor-placeholder
+description: Placeholder workflow artifact to enable workflow execution API access via Foundry Gateway
+provision_on_install: true
+
+trigger:
+    name: On demand
+    type: On demand
+    next:
+        - print_results
+
+actions:
+    print_results:
+        id: aadbf530e35fc452a032f5f8acaaac2a
+        properties:
+            text_data: "placeholder"
+        version_constraint: ~1
+
+output_fields: []

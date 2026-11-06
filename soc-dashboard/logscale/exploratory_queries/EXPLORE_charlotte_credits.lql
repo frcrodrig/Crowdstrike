@@ -1,0 +1,4 @@
+#event_simpleName=Event_ExternalApiActivityAuditEvent
+| ApiServiceClass=*
+| head(100)
+| table([ApiServiceClass, ServiceName, UserId, @timestamp, *])

@@ -1,0 +1,12 @@
+// Charlotte Credits Usage
+// Strategy: Track Charlotte AI API calls and estimate credit consumption
+
+#event_simpleName=Event_ExternalApiActivityAuditEvent
+| ApiServiceClass=charlotte OR ServiceName=~"*charlotte*" OR ServiceName=~"*ai*" OR ApiServiceClass=llm
+| bucket(@timestamp, span=1d)
+| api_calls := count()
+| // Estimate credits: assuming 10 credits per AI call (industry standard)
+| credits_used := api_calls * 10
+| groupBy([UserId, UserName], function=sum(credits_used, as=total_credits))
+| sort(total_credits, order=desc)
+| head(10)

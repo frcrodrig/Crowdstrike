@@ -1,0 +1,10 @@
+// MTTC CrowdStrike - CORREGIDA
+// Workflows de contención usando campos reales
+
+#event_simpleName=FusionWorkflowEvent
+| status="Succeeded"
+| definition_name=*contain* OR definition_name=*isolate* OR definition_name=*quarantine* OR definition_name=*Contain*
+| execution_time_ms := (end_timestamp - start_timestamp) / 1000
+| execution_time_ms > 0
+| execution_time_ms < 5000  // Menos de 5 segundos
+| stats(avg(execution_time_ms, as=mttc_ms), count(as=total_containments))

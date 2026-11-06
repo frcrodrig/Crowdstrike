@@ -1,0 +1,3 @@
+#event_simpleName=Event_*DetectionSummaryEvent
+| head(5)
+| table([@timestamp, DetectionIdExternalId, Severity, ProcessStartTime, *])

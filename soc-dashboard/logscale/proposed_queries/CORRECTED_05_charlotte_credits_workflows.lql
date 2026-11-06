@@ -1,0 +1,11 @@
+// Charlotte Credits - OPCIÓN 1: Workflows de Agentes
+// Si Charlotte se usa via workflows/agentes
+
+#event_simpleName=FusionWorkflowEvent
+| definition_name=~"*Charlotte*" OR definition_name=~"*AI*" OR definition_name=~"*Agent*" OR definition_name=~"*Advisor*"
+| status="Succeeded" OR status="Failed"
+| // Estima créditos por ejecución (ajustar según tu modelo de billing)
+| credits_per_execution := 15  // Estimación: 15 créditos por ejecución de agente
+| groupBy([cid], function=[count(as=executions)])
+| total_credits := executions * credits_per_execution
+| stats(sum(total_credits, as=total_credits_used), sum(executions, as=total_agent_executions))

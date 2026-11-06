@@ -1,0 +1,2 @@
+| groupBy(#repo, function=[count(as=events), max(@timestamp, as=last_event)])
+| sort(events, order=desc)

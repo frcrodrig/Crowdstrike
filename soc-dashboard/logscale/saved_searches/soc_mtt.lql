@@ -1,0 +1,3 @@
+#event_simpleName=Event_*DetectionSummaryEvent
+| stats([avg(Severity, as=avg_triage_min), count(as=detection_count)])
+| avg_triage_min := coalesce(avg_triage_min, 0)

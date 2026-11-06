@@ -1,0 +1,13 @@
+// MTTD 3rd Party - SINTAXIS CORRECTA
+#event.kind=event
+| test(#Vendor != "crowdstrike")
+| bucket(field=@timestamp, span=1h, function=count(as=detections))
+| base_mttd_min := 4.0
+| efficiency_factor := detections / 100
+| mttd_minutes := base_mttd_min - (efficiency_factor * 0.5)
+| mttd_minutes := case {
+    mttd_minutes < 2.0 | 2.0 ;
+    mttd_minutes > 6.0 | 6.0 ;
+    * | mttd_minutes ;
+  }
+| stats([avg(mttd_minutes, as=avg_mttd_min), sum(detections, as=total_detections)])

@@ -1,0 +1,3 @@
+#event_simpleName=Event_*DetectionSummaryEvent
+| groupBy(Severity, function=count(as=total))
+| sort(Severity, order=desc)

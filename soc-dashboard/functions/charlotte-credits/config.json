@@ -1,0 +1,6 @@
+{
+  "handler": "handler.handler",
+  "runtime": "python3.11",
+  "timeout_seconds": 30,
+  "version": "0.1.0"
+}

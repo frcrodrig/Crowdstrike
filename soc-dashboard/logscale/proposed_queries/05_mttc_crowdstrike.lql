@@ -1,0 +1,10 @@
+// MTTC CrowdStrike (milliseconds) - Containment via Workflow Execution
+// Strategy: Measure containment workflow execution time
+
+#event_simpleName=FusionWorkflowEvent
+| status="Succeeded"
+| WorkflowType=*contain* OR WorkflowType=*isolate* OR WorkflowType=*quarantine*
+| execution_time_ms := (EndTime - StartTime)
+| execution_time_ms > 0
+| execution_time_ms < 5000  // Cap at 5 seconds for containment actions
+| stats(avg(execution_time_ms, as=mttc_ms), count(as=total_containments))

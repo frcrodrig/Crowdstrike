@@ -1,0 +1,3 @@
+#event_simpleName=Event_UserActivityAuditEvent
+| head(5)
+| table([UserId, OperationName, TargetId, @timestamp, *])

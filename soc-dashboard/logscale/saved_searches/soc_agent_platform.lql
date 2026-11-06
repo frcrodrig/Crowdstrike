@@ -1,0 +1,8 @@
+#event_simpleName=AgentOnline
+| case {
+    ProductType = "1" | platform := "Workstation" ;
+    ProductType = "2" | platform := "DC" ;
+    ProductType = "3" | platform := "Server" ;
+    * | platform := "Unknown" ;
+  }
+| groupBy(platform, function=count(as=count))

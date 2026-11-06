@@ -1,0 +1,45 @@
+(#event_simpleName="Event_EppDetectionSummaryEvent" OR #event_simpleName="Event_IdpDetectionSummaryEvent" OR #event_simpleName="Event_DataProtectionDetectionSummaryEvent") OR (#event_simpleName=Event_UserActivityAuditEvent OperationName=detection_update)
+| case {
+  #type=falcon-raw-data
+    | #event_simpleName=/Detection/
+    | #event_simpleName!=DetectionExcluded
+    | #event.kind:="alert"
+    | #Vendor:="crowdstrike"
+    | detection_source:="firstparty";
+  #type!=falcon-raw-data
+    | #event.kind="alert"
+    | detection_source:="thirdparty";
+  *
+}
+| CompositeId := coalesce(CompositeId, DetectId)
+| case {
+  #event_simpleName=Event_UserActivityAuditEvent
+    | CompositeId := Attributes.composite_id
+    | fp_verdict := Attributes.verdict;
+  *
+    | fp_verdict := ""
+}
+| case {
+    fp_verdict = "false_positive" | is_fp := 1;
+    * | is_fp := 0;
+  }
+| groupBy([CompositeId], function=[max(detection_source, as=detection_source), max(is_fp, as=is_fp)])
+| case {
+    detection_source = "firstparty" | is_charlotte := 1;
+    * | is_charlotte := 0;
+  }
+| charlotteFP_n := is_charlotte * is_fp
+| charlotteTotal_n := is_charlotte
+| thirdPartyFP_n := (1 - is_charlotte) * is_fp
+| thirdPartyTotal_n := 1 - is_charlotte
+| stats([sum(charlotteFP_n, as=charlotteFP), sum(charlotteTotal_n, as=charlotteTotal), sum(thirdPartyFP_n, as=thirdPartyFP), sum(thirdPartyTotal_n, as=thirdPartyTotal)])
+| case {
+    charlotteTotal > 0 | charlotte_raw := 100 - (charlotteFP / charlotteTotal * 100);
+    * | charlotte_raw := 100;
+  }
+| case {
+    thirdPartyTotal > 0 | thirdParty_raw := 100 - (thirdPartyFP / thirdPartyTotal * 100);
+    * | thirdParty_raw := 100;
+  }
+| charlotteAccuracy := round(charlotte_raw)
+| thirdPartyAccuracy := round(thirdParty_raw)

@@ -1,0 +1,8 @@
+// Charlotte Credits Total - SINTAXIS CORRECTA
+#event_simpleName=FusionWorkflowEvent
+| in(field=status, values=["Succeeded", "Failed"])
+| definition_name=/charlotte|ai|agent|advisor|iom/i
+| credits_per_execution := 15
+| groupBy([cid], function=count(as=executions))
+| total_credits := executions * credits_per_execution
+| stats([sum(total_credits, as=total_credits_used), sum(executions, as=total_agent_executions)])

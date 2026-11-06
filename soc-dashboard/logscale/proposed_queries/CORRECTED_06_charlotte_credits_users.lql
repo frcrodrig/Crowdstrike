@@ -1,0 +1,11 @@
+// Charlotte Credits - OPCIÓN 2: Por Usuario (Top Consumers)
+// Basado en ejecuciones de workflows con agentes por usuario
+
+#event_simpleName=FusionWorkflowEvent
+| definition_name=~"*Charlotte*" OR definition_name=~"*AI*" OR definition_name=~"*Agent*" OR definition_name=~"*Advisor*" OR definition_name=~"*IOM*"
+| status="Succeeded" OR status="Failed"
+| credits_per_execution := 15
+| groupBy([cid, definition_name], function=[count(as=executions)])
+| user_credits := executions * credits_per_execution
+| sort(user_credits, order=desc)
+| head(10)

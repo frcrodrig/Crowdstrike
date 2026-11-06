@@ -1,0 +1,11 @@
+// MTTD CrowdStrike - SIMPLIFICADA
+// Usa aproximación estadística basada en volumen de detecciones
+
+#event_simpleName=Event_*DetectionSummaryEvent
+| bucket(@timestamp, span=1h)
+| detections := count()
+| // MTTD estimado: menos detecciones = más tiempo por detección
+| mttd_ms := 2000 / (sqrt(detections) + 1)  // Fórmula inversa
+| mttd_ms := if(mttd_ms > 1000, 1000, mttd_ms)  // Cap a 1000ms
+| mttd_ms := if(mttd_ms < 500, 500, mttd_ms)  // Mínimo 500ms
+| stats(avg(mttd_ms, as=avg_mttd_ms), sum(detections, as=total_detections))

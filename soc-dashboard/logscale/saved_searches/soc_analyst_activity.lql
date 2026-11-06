@@ -1,0 +1,6 @@
+#event_simpleName=Event_UserActivityAuditEvent
+| analyst := UserId
+| action := OperationName
+| groupBy([analyst, action, @timestamp], function=count(as=action_count))
+| sort(@timestamp, order=desc)
+| head(500)
