@@ -1,8 +1,0 @@
-#event_simpleName=Event_*DetectionSummaryEvent
-| case {
-    Severity >= 90 | severity_label := "Critical" ;
-    Severity >= 70 | severity_label := "High" ;
-    Severity >= 50 | severity_label := "Medium" ;
-    * | severity_label := "Low" ;
-  }
-| timechart(span=1h, series=severity_label, function=count(), limit=24)

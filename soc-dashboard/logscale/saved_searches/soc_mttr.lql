@@ -1,3 +1,0 @@
-#event_simpleName=Event_*DetectionSummaryEvent
-| stats([avg(Severity, as=avg_mttr_min), count(as=detection_count)])
-| avg_mttr_min := coalesce(avg_mttr_min, 0)

@@ -1,4 +1,0 @@
-# Aggregate Python dependencies for Falcon Foundry functions.
-# Each function under functions/<name>/ pins its own requirements.txt;
-# this top-level file mirrors them for tooling, scanners, and local dev.
-crowdstrike-foundry-function==1.0.0

@@ -1,9 +1,0 @@
-#event_simpleName=Event_UserActivityAuditEvent
-| hour := formatTime("%H", field=@timestamp)
-| dayOfWeek := formatTime("%A", field=@timestamp)
-| case {
-    dayOfWeek = "Saturday" OR dayOfWeek = "Sunday" | day_type := "Weekend" ;
-    * | day_type := "Weekday" ;
-  }
-| groupBy([hour, day_type], function=count(as=activity_count))
-| sort([day_type, hour])

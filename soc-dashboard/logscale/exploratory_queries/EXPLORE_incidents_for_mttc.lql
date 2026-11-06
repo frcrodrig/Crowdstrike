@@ -1,3 +1,0 @@
-#event_simpleName=IncidentSummaryEvent
-| head(5)
-| table([IncidentId, status, Severity, @timestamp, *])

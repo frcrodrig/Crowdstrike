@@ -1,5 +1,0 @@
-| groupBy(#repo, function=[count(as=events), max(@timestamp, as=last_event)])
-| staleness_ms := now() - last_event
-| staleness_min := staleness_ms / 1000 / 60
-| staleness_min > 60
-| sort(staleness_min, order=desc)
