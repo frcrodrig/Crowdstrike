@@ -51,21 +51,6 @@ Scans / scan-runs listing with per-appliance detail and status filters.
 
 <p align="center"><img src="docs/screenshots/04-scans.png" alt="Scans" width="800"></p>
 
-### Dashboard — overview (v0.26.37)
-Updated executive dashboard with NVA-host counters, severity breakdown, hosts-by-platform doughnut, and top services/ports on scanned assets.
-
-<p align="center"><img src="docs/screenshots/05-dashboard-overview.png" alt="Dashboard overview" width="800"></p>
-
-### Network map — subnet cards (v0.26.37)
-Card-based layout of discovered subnets and zones, with per-subnet host grids, OS breakdown, and scanner coverage legend.
-
-<p align="center"><img src="docs/screenshots/06-network-map-cards.png" alt="Network map subnet cards" width="800"></p>
-
-### Discovered asset vulnerabilities
-Per-host vulnerability listing with CVE, severity, exploit status, CVSS, and last-seen timestamps.
-
-<p align="center"><img src="docs/screenshots/07-discovered-vulnerabilities.png" alt="Discovered asset vulnerabilities" width="800"></p>
-
 ## ✨ Features
 
 - **Network map** with two layouts: *ant-colony* (force-directed) and *isometric*.
